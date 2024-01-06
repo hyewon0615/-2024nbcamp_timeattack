@@ -1,10 +1,14 @@
 ## 프로젝트 개요
+![image](https://github.com/hyewon0615/-2024nbcamp_timeattack/assets/146814055/0d82620d-7717-496c-9356-3333f1b7b163)
+![image](https://github.com/hyewon0615/-2024nbcamp_timeattack/assets/146814055/d85aed98-8a17-4d08-b685-3afc21f15ff6)
 
 E-Commerce 의 기본 제품 요소인 로그인, 회원가입 기능 구현 페이지다. 페이지는 로그인과, 회원가입 페이지만 있고 회원가입 완료 시 로그인 페이지로, 로그인 완료 시 다시 로그인 페이지로 리디렉션 된다.
 
 #### 유효성 검사
 
 react-hook-form 과 yup 라이브러리를 사용해서 진행했다. 불필요한 렌더링을 줄이고 input의 수가 많아 react-hook-form을 사용했고 유효성 검사를 보다 간편하게 하기 위해 사용했다.
+![image](https://github.com/hyewon0615/-2024nbcamp_timeattack/assets/146814055/5c9a4d19-06b2-4fa2-a261-b4624a3afb8c)
+![image](https://github.com/hyewon0615/-2024nbcamp_timeattack/assets/146814055/372911fe-77ef-4c0a-b809-329b171f7218)
 
 #### 상태관리
 
