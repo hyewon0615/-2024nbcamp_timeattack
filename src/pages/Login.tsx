@@ -26,13 +26,15 @@ function Login() {
   const {
     handleSubmit,
     register,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm<FormData>({
     mode: 'onChange',
     resolver: yupResolver(schema)
   });
   type FormData = yup.InferType<typeof schema>;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onSubmitHandler: SubmitHandler<FieldValues> = async ({
     id,
     password
@@ -47,19 +49,19 @@ function Login() {
       if (data.success) {
         dispatch(login(data.accessToken));
         alert('로그인 성공');
+        reset();
       }
     } catch (err: any) {
       alert(err.response.data.message);
     }
   };
-  const navigate = useNavigate();
+
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmitHandler)}>
         <Title>로그인</Title>
         <Input
           placeholder="이메일을 입력해주세요 "
-          type="email"
           {...register('id', { required: true })}
         />
         <Message>{errors.id?.message}</Message>

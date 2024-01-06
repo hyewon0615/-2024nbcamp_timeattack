@@ -70,7 +70,6 @@ function Join() {
         <Title> 회원가입</Title>
         <Input
           placeholder="이메일을 입력해주세요 "
-          type="email"
           {...register('id', { required: true })}
         />
         <Message>{errors.id?.message}</Message>
