@@ -49,13 +49,13 @@ function Login() {
       if (data.success) {
         dispatch(login(data.accessToken));
         alert('로그인 성공');
-        reset();
+        window.location.reload();
       }
     } catch (err: any) {
       alert(err.response.data.message);
     }
   };
-
+  console.log('렌더링중!');
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmitHandler)}>
