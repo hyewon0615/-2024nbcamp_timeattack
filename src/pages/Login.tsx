@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import authApi from '../api';
+import Button from '../componenets/common/Button';
 import useForm from '../hooks/useForm';
 import { login } from '../redux/modules/authSlice';
 function Login() {
@@ -33,20 +34,24 @@ function Login() {
       }
     } else {
       //회원가입
-      try {
-        const { data } = await authApi.post('/register', {
-          id,
-          password,
-          nickname
-        });
-        if (data.success) {
-          setIsLoginMode(true);
-          resetForm();
-          alert('회원가입 성공');
+      if (password !== checkPassword) {
+        alert('비밀번호와 확인비밀번호가 일치하지 않습니다.');
+      } else {
+        try {
+          const { data } = await authApi.post('/register', {
+            id,
+            password,
+            nickname
+          });
+          if (data.success) {
+            setIsLoginMode(true);
+            resetForm();
+            alert('회원가입 성공');
+          }
+          console.log(data);
+        } catch (err: any) {
+          alert(err.response.data.message);
         }
-        console.log(data);
-      } catch (err: any) {
-        alert(err.response.data.message);
       }
     }
   };
@@ -58,11 +63,11 @@ function Login() {
           name="id"
           onChange={onChangeHandler}
           value={id}
-          placeholder="아이디 (4~10글자)를 입력해주세요 "
-          minLength={4}
-          maxLength={10}
+          placeholder="이메일을 입력해주세요 "
+          type="email"
         />
         <Input
+          type="password"
           name="password"
           onChange={onChangeHandler}
           value={password}
@@ -90,9 +95,7 @@ function Login() {
             />
           </>
         )}
-        <ButtonWrapper>
-          <Button>{isLoginMode ? 'login' : 'join us'}</Button>
-        </ButtonWrapper>
+        <Button onClick={() => {}} text={isLoginMode ? 'login' : 'join us'} />
 
         <ToggleText>
           <span onClick={() => setIsLoginMode((prev) => !prev)}>
@@ -147,12 +150,5 @@ const ToggleText = styled.div`
     }
   }
 `;
-const Button = styled.button`
-  width: 100px;
-  height: 40px;
-`;
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
+
 export default Login;
