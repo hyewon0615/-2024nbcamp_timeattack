@@ -78,7 +78,7 @@ function Login() {
               navigate('/join');
             }}
           >
-            로그인
+            회원가입
           </span>
         </ToggleText>
       </Form>
@@ -97,7 +97,7 @@ const Form = styled.form`
   background-color: white;
   width: 500px;
   border-radius: 12px;
-  padding: 12px;
+  padding: 24px;
   font-size: 16px;
 `;
 

@@ -22,14 +22,12 @@ function Join() {
     checkPassword: yup
       .string()
       .oneOf([yup.ref('password')], '⚠비밀번호가 일치하지 않습니다.')
-      .required('⚠비밀번호를 한번 더 입력해주세요')
-      .nullable(),
+      .required('⚠비밀번호를 한번 더 입력해주세요'),
     nickname: yup
       .string()
       .min(1, '⚠닉네임은 최소1자리 이상입니다.')
       .max(10, '⚠닉네임은 최대 10자리까지입니다.')
       .required('⚠닉네임은 반드시 입력해주세요.')
-      .nullable()
   });
 
   const {
@@ -42,6 +40,7 @@ function Join() {
   });
   type FormData = yup.InferType<typeof schema>;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onSubmitHandler: SubmitHandler<FieldValues> = async ({
     id,
     password,
@@ -58,13 +57,13 @@ function Join() {
       });
       if (data.success) {
         alert('회원가입 성공');
+        navigate('/login');
       }
-      console.log(data);
     } catch (err: any) {
       alert(err.response.data.message);
     }
   };
-  const navigate = useNavigate();
+
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -122,7 +121,7 @@ const Form = styled.form`
   background-color: white;
   width: 500px;
   border-radius: 12px;
-  padding: 12px;
+  padding: 24px;
   font-size: 16px;
 `;
 
