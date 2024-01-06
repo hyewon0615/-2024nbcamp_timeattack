@@ -27,7 +27,7 @@ redux-toolkit을 사용해서 관리 했고 로그인, 회원가입 로직은 ax
 
 #### 브랜치 별 안내
 
-main => 과제 제출물 react-typescript => custom훅을 이용한 input 라이브러리 없이 구현한 버전 (실수로 유효성 검사 부분 사라짐) react-hook-form => 라이브러리를 사용한 과제 작업 브랜치
+main => 과제 제출물 react-typescript => custom훅을 이용한 input 라이브러리 없이 구현한 버전 (실수로 유효성 검사 부분 사라짐) react-hook-form => 라이브러리를 사용한 과제 작업 브랜치/로그인 유지 확인 
 
 ## 구현하며 중요하게 생각했던 점
 
