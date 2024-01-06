@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+## 프로젝트 개요
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+E-Commerce 의 기본 제품 요소인 로그인, 회원가입 기능 구현 페이지다. 페이지는 로그인과, 회원가입 페이지만 있고 회원가입 완료 시 로그인 페이지로, 로그인 완료 시 다시 로그인 페이지로 리디렉션 된다.
 
-## Available Scripts
+#### 유효성 검사
 
-In the project directory, you can run:
+react-hook-form 과 yup 라이브러리를 사용해서 진행했다. 불필요한 렌더링을 줄이고 input의 수가 많아 react-hook-form을 사용했고 유효성 검사를 보다 간편하게 하기 위해 사용했다.
 
-### `yarn start`
+#### 상태관리
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+redux-toolkit을 사용해서 관리 했고 로그인, 회원가입 로직은 axios로 local에서 관리 했다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### 스타일
 
-### `yarn test`
+스타일은 styled - components를 사용해 파일을 분리하지 않고 하단에서 관리했다
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 만능버튼
 
-### `yarn build`
+처음에 로그인이 완료 되었을 때 이동 페이지로 로그아웃 버튼이 있는 페이지를 만들었다가 과제가 로그인 후 로그인 페이지로 리디렉션이여서 삭제되었지만 버튼이 공통으로 들어가있는 곳이 있어서 만능 버튼을 만들었다. 수정 후 로그인 회원가입 페이지에서만 쓰이고 있다
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### 브랜치 별 안내
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+main => 과제 제출물 react-typescript => custom훅을 이용한 input 라이브러리 없이 구현한 버전 (실수로 유효성 검사 부분 사라짐) react-hook-form => 라이브러리를 사용한 과제 작업 브랜치
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 구현하며 중요하게 생각했던 점
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+유효성 검사를 진행할 때 오류멘트가 생길 때 ui적으로 출렁거리지 않돌고 유의하였다. 오류가 있으면 크기가 커지고 없으면 작아지지 않도록 default크기를 설정해줬다. 그리고 타입스크립트가 능숙하지 하진 못하지만 최대한 타입을 지정해주고 any 타입을 적게 사용하려 노력했다.
