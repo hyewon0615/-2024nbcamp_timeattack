@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import { RootState } from "../redux/config/configStore";
+import { useSelector } from 'react-redux';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Home from '../pages/Home';
+import Join from '../pages/Join';
+import Login from '../pages/Login';
+import { RootState } from '../redux/config/configStore';
 function Router() {
   const isLogin = useSelector((state: RootState) => state.authSlice.isLogin);
   return (
@@ -16,6 +17,7 @@ function Router() {
         ) : (
           <>
             <Route path="/login" element={<Login />} />
+            <Route path="/join" element={<Join />} />
             <Route path="*" element={<Navigate replace to="/login" />} />
           </>
         )}

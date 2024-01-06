@@ -7,9 +7,7 @@ import styled from 'styled-components';
 import * as yup from 'yup';
 import authApi from '../api';
 import Button from '../componenets/common/Button';
-import { login } from '../redux/modules/authSlice';
-
-function Login() {
+function Join() {
   const schema = yup.object().shape({
     id: yup
       .string()
@@ -20,7 +18,18 @@ function Login() {
       .string()
       .min(4, '⚠비밀번호는 최소4자리 이상입니다.')
       .max(15, '⚠비밀번호는 최대 15자리까지입니다.')
-      .required('⚠비밀번호는 반드시 입력해주세요.')
+      .required('⚠비밀번호는 반드시 입력해주세요.'),
+    checkPassword: yup
+      .string()
+      .oneOf([yup.ref('password')], '⚠비밀번호가 일치하지 않습니다.')
+      .required('⚠비밀번호를 한번 더 입력해주세요')
+      .nullable(),
+    nickname: yup
+      .string()
+      .min(1, '⚠닉네임은 최소1자리 이상입니다.')
+      .max(10, '⚠닉네임은 최대 10자리까지입니다.')
+      .required('⚠닉네임은 반드시 입력해주세요.')
+      .nullable()
   });
 
   const {
@@ -35,19 +44,22 @@ function Login() {
   const dispatch = useDispatch();
   const onSubmitHandler: SubmitHandler<FieldValues> = async ({
     id,
-    password
+    password,
+    checkPassword,
+    nickname
   }) => {
-    //로그인
+    //회원가입
 
     try {
-      const { data } = await authApi.post('/login', {
+      const { data } = await authApi.post('/register', {
         id,
-        password
+        password,
+        nickname
       });
       if (data.success) {
-        dispatch(login(data.accessToken));
-        alert('로그인 성공');
+        alert('회원가입 성공');
       }
+      console.log(data);
     } catch (err: any) {
       alert(err.response.data.message);
     }
@@ -56,7 +68,7 @@ function Login() {
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmitHandler)}>
-        <Title>로그인</Title>
+        <Title> 회원가입</Title>
         <Input
           placeholder="이메일을 입력해주세요 "
           type="email"
@@ -70,12 +82,25 @@ function Login() {
         />
         <Message>{errors.password?.message}</Message>
 
-        <Button onClick={() => {}} text={'로그인하기'} />
+        <>
+          <Input
+            placeholder="비밀번호를 다시 입력해주세요"
+            {...register('checkPassword', { required: true })}
+          />
+          <Message>{errors.checkPassword?.message}</Message>
+          <Input
+            placeholder="닉네임 (1~10글자)를 입력해주세요"
+            {...register('nickname', { required: true })}
+          />
+          <Message>{errors.nickname?.message}</Message>
+        </>
+
+        <Button onClick={() => {}} text={'회원가입하기'} />
 
         <ToggleText>
           <span
             onClick={() => {
-              navigate('/join');
+              navigate('/login');
             }}
           >
             로그인
@@ -134,4 +159,4 @@ const Message = styled.p`
   color: red;
 `;
 
-export default Login;
+export default Join;
