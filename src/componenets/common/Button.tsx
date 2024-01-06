@@ -16,6 +16,7 @@ const ButtonWrapper = styled.div`
     width: 100px;
     height: 40px;
     border-radius: 12px;
+    cursor: pointer;
   }
 `;
 export default Button;

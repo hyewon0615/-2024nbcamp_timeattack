@@ -1,23 +1,58 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler } from 'react-hook-form/dist/types';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import * as yup from 'yup';
 import authApi from '../api';
 import Button from '../componenets/common/Button';
-import useForm from '../hooks/useForm';
 import { login } from '../redux/modules/authSlice';
 function Login() {
   const [isLoginMode, setIsLoginMode] = useState(true);
-  const { formState, onChangeHandler, resetForm } = useForm({
-    id: '',
-    password: '',
-    nickname: '',
-    checkPassword: ''
-  });
-  const { id, password, nickname, checkPassword } = formState;
+  //   const { formState, onChangeHandler, resetForm } = useForm({
+  //     id: '',
+  //     password: '',
+  //     nickname: '',
+  //     checkPassword: ''
+  //   });
+  //   const { id, password, nickname, checkPassword } = formState;
+  const schema = yup.object().shape({
+    id: yup
+      .string()
+      .email('이메일 형식이 적합하지 않습니다.')
+      .required('반드시 입력해야하는 필수 사항입니다.'),
 
+    password: yup
+      .string()
+      .min(4, '비밀번호는 최소4자리 이상입니다.')
+      .max(15, '비밀번호는 최대 15자리까지입니다.')
+      .required('비밀번호는 반드시 입력해주세요.'),
+    checkPassword: yup
+      .string()
+      .oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.')
+      .required('비밀번호를 한번 더 입력해주세요'),
+    nickname: yup
+      .string()
+      .min(1, '닉네임은 최소1자리 이상입니다.')
+      .max(10, '닉네임은 최대 10자리까지입니다.')
+      .required('닉네임은 반드시 입력해주세요.')
+  });
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm<FormData>({
+    mode: 'onChange',
+    resolver: yupResolver(schema)
+  });
+  type FormData = yup.InferType<typeof schema>;
   const dispatch = useDispatch();
-  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmitHandler: SubmitHandler<FieldValues> = async ({
+    id,
+    password,
+    nickname
+  }) => {
     if (isLoginMode) {
       //로그인
       try {
@@ -34,65 +69,51 @@ function Login() {
       }
     } else {
       //회원가입
-      if (password !== checkPassword) {
-        alert('비밀번호와 확인비밀번호가 일치하지 않습니다.');
-      } else {
-        try {
-          const { data } = await authApi.post('/register', {
-            id,
-            password,
-            nickname
-          });
-          if (data.success) {
-            setIsLoginMode(true);
-            resetForm();
-            alert('회원가입 성공');
-          }
-          console.log(data);
-        } catch (err: any) {
-          alert(err.response.data.message);
+
+      try {
+        const { data } = await authApi.post('/register', {
+          id,
+          password,
+          nickname
+        });
+        if (data.success) {
+          setIsLoginMode(true);
+          alert('회원가입 성공');
         }
+        console.log(data);
+      } catch (err: any) {
+        alert(err.response.data.message);
       }
     }
   };
   return (
     <Container>
-      <Form onSubmit={onSubmitHandler}>
+      <Form onSubmit={handleSubmit(onSubmitHandler)}>
         <Title>{isLoginMode ? '로그인' : '회원가입'}</Title>
         <Input
-          name="id"
-          onChange={onChangeHandler}
-          value={id}
           placeholder="이메일을 입력해주세요 "
           type="email"
+          {...register('id', { required: true })}
         />
+        <Message>{errors.id?.message}</Message>
         <Input
           type="password"
-          name="password"
-          onChange={onChangeHandler}
-          value={password}
           placeholder="비밀번호 (4~15글자)를 입력해주세요"
-          minLength={4}
-          maxLength={15}
+          {...register('password', { required: true })}
         />
+        <Message>{errors.password?.message}</Message>
         {!isLoginMode && (
           <>
             <Input
-              name="checkPassword"
-              value={checkPassword}
-              onChange={onChangeHandler}
               placeholder="비밀번호를 다시 입력해주세요"
-              minLength={4}
-              maxLength={15}
+              {...register('checkPassword', { required: true })}
             />
+            <Message>{errors.checkPassword?.message}</Message>
             <Input
-              name="nickname"
-              value={nickname}
-              onChange={onChangeHandler}
               placeholder="닉네임 (1~10글자)를 입력해주세요"
-              minLength={1}
-              maxLength={10}
+              {...register('nickname', { required: true })}
             />
+            <Message>{errors.nickname?.message}</Message>
           </>
         )}
         <Button onClick={() => {}} text={isLoginMode ? 'login' : 'join us'} />
@@ -149,6 +170,10 @@ const ToggleText = styled.div`
       color: black;
     }
   }
+`;
+const Message = styled.p`
+  height: 20px;
+  color: red;
 `;
 
 export default Login;
